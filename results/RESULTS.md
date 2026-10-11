@@ -881,3 +881,24 @@ other ten heads of layer 22 0.020 or less. The Gemma rerun matches PR #12's repl
 conditions (transformers 5.6.2 here, 5.18.0 there). The plan's 0.096 for L11H1 rounded 0.0955 a second time; to
 three places it is 0.095.
 
+# Qwen3-4B and SmolLM3-3B crosslingual screens, 2026-10-11
+
+results/qwen3-4b-instruct-lcbscreen, smollm3-instruct-lcbscreen and qwen3-4b-instruct-lcb-top. Every head zero-ablated
+on 100 crosslingual LCB prompts (25 per language), as for the two Llamas; SmolLM3-3B without L1H12, which breaks
+generation (experiments/head_rule.md). A head that lowers the screen by 0.1 or more gets the full five-language run.
+
+Qwen3-4B (10-10 16:18 to 10-11 04:41 KST): baseline 0.908; with L24H27 removed 0.806 (-0.102); the next head 0.888
+(L18H9). L24H27's LCB run (to 05:17):
+
+| condition | mono LPR | Δ mono | cross LPR | Δ cross |
+|---|---|---|---|---|
+| base | 0.982 | | 0.893 | |
+| L24H27 zero | 0.982 | +0.000 [-0.010, +0.010] | 0.816 | -0.076 [-0.093, -0.061] |
+| L24H27 mean | 0.978 | -0.004 [-0.014, +0.006] | 0.853 | -0.040 [-0.052, -0.027] |
+| 3 controls (L24H12, L24H24, L24H28) | 0.976 to 0.994 | -0.005 to +0.010 | 0.893 to 0.907 | -0.001 to +0.013 |
+
+Crosslingual lines in English: 0.08 at baseline, 0.15 with L24H27 removed. Seunghyeok Hong's draft PR #19 finds the
+same L24H27 in Qwen3-8B (both models have 36 layers of 32 heads).
+
+SmolLM3-3B (10-10 16:49 to 10-11 00:34 KST): baseline 0.939; with L1H12 removed 0.000 (left out); the next heads 0.908
+(L15H4, L21H7; -0.031), so no head got the full run.
