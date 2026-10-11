@@ -14,7 +14,7 @@ MODELS = [
     ("Qwen2.5-3B", "qwen2.5-3b-instruct", "qwen2.5-3b", "L27H13", "qwen2.5-3b-instruct-lcb"),
     ("Qwen2.5-7B", "qwen2.5-7b-instruct", "qwen2.5-7b", "L19H1", "qwen2.5-7b-instruct-lcb"),
     ("Qwen3-1.7B", "qwen3-1.7b-instruct", "qwen3-1.7b", "L18H12", "qwen3-1.7b-instruct-lcb"),
-    ("Qwen3-4B", "qwen3-4b-instruct-screen", None, None, None),
+    ("Qwen3-4B", "qwen3-4b-instruct-screen", None, "L24H27", "qwen3-4b-instruct-lcb-top"),
     ("Gemma-3-1B", "gemma3-1b-instruct", "gemma3-1b", "L11H3", "gemma3-1b-instruct-lcb"),
     ("Gemma-3-4B", "gemma3-4b-instruct", "gemma3-4b", "L24H0", "gemma3-4b-instruct-lcb"),
     ("OLMo-2-1B", "olmo2-1b-instruct", "olmo2-1b", "L12H8", "olmo2-1b-instruct-lcb"),
@@ -23,10 +23,7 @@ MODELS = [
     ("Llama-3.2-3B", "llama3.2-3b-instruct-screen", None, "L13H19", "llama3.2-3b-instruct-lcb-top"),
     ("SmolLM3-3B", "smollm3-instruct-screen", None, None, None),
 ]
-NOTES = {
-    "Qwen3-4B": "none on FLORES (largest 0.024 on the screen)",
-    "SmolLM3-3B": "none on FLORES (L1H12 breaks generation, dNLL +2.58)",
-}
+NOTES = {"SmolLM3-3B": "none in either screen (L1H12 breaks generation)"}
 # where each family's attention block normalizes (transformers' decoder layers): its input (pre), its output before
 # the residual stream (post), queries and keys (QK)
 NORM = {"Qwen2.5": "pre", "Qwen3": "pre, QK", "Gemma-3": "pre+post, QK", "OLMo-2": "post, QK", "OLMo-3": "post, QK",
@@ -112,8 +109,9 @@ def tex(rs):
               r"baseline and in another language with the head zeroed or replaced by its mean output; others: the "
               r"largest zero value among the other heads of its layer; base: the same head zeroed in the base model. "
               r"LCB: paired change in line-level pass rate with the head zeroed, five languages; gray where the 95\% "
-              r"CI includes zero. $^{s}$: 125-prompt screen. The Llama heads come from a screen of every head on "
-              r"crosslingual LCB prompts. Heads per layer and normalization differ, so each head is compared with the "
+              r"CI includes zero. $^{s}$: 125-prompt screen. The Llama and Qwen3-4B heads come from a screen of every "
+              r"head on crosslingual LCB prompts; SmolLM3-3B's only candidate in either screen, L1H12, breaks "
+              r"generation (dNLL $+$2.58). Heads per layer and normalization differ, so each head is compared with the "
               r"other heads of its own layer, not with the heads of other models.}",
               r"\label{tab:models}", r"\end{table*}"]
     return "\n".join(lines)
